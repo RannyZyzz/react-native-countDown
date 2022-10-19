@@ -1,51 +1,55 @@
 import React,{ useState } from "react"
 import { View, Button } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { convertDate } from "../components";
 
-export function screenInput(){
+export function ScreenInput(){
     const navigation = useNavigation()
     const dataAtual = new Date().getTime()
     const [date, setDate] = useState(new Date(dataAtual));
     
+    
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-    const onChange = (event: any, selectedDate: any) => {
-      const currentDate = selectedDate;
-      setDate(currentDate);
-      //console.log(currentData) nova data selecionada
+    const showDatePicker = () => {
+      setDatePickerVisibility(true);
     };
 
-    const showMode = (currentMode: any) => {
-        DateTimePickerAndroid.open({
-          value: date,
-          onChange,
-          mode: currentMode,
-          is24Hour: true,
-        });
-      };
+    const hideDatePicker = () => {
+      setDatePickerVisibility(false);
+    };
 
-    const showDatepicker = () => {
-        showMode('date');
-      };
+    const handleConfirm = (date: any) => {
+      hideDatePicker();
+      setDate(date)
+    };
+
 
     
-      function openScreen(){
-        const toSeconds = convertDate(dataAtual,date)//converte para segundos a data atual subtraido da data solicitada
-        navigation.navigate('screencountdown', {name: toSeconds})
-    }
+    function openScreen(){
+      const toSeconds = convertDate(dataAtual,date)//converte para segundos a data atual subtraido da data solicitada
+      navigation.navigate('ScreenCountDown', {name: toSeconds})
+  }
 
     return(
+      <>
         <View style={{ flex:1, justifyContent: 'center', alignItems: 'center'}}>
-            <Button 
-            onPress={showDatepicker} 
-            title="Selecione a data" 
-             />
-            
-            <Button
-                title="Avançar"
-                onPress={openScreen}
+          <Button title="Seletor de data" onPress={showDatePicker} />
+            <DateTimePickerModal
+              isVisible={isDatePickerVisible}
+              mode="date"
+              onConfirm={handleConfirm}
+              onCancel={hideDatePicker}
             />
         </View>
+        <View style={{flex: 1,alignItems: 'center'}}>
+            <Button
+                title="Simular"
+                onPress={openScreen}
+            />
+            
+        </View>
+        </>
     )
 }

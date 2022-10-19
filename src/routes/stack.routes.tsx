@@ -2,29 +2,30 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack'
 
 const { Screen,Navigator } = createNativeStackNavigator()
 
-import { screenInput } from '../screens/screenInput'
-import { screencountdown } from '../screens/screenCountDown'
+import { ScreenInput } from '../screens/screenInput'
+import { ScreenCountDown } from '../screens/screenCountDown'
 
 export function StackRoutes(){
     return(
         <Navigator>
             <Screen 
-                name="screenInput"
+                name="ScreenInput"
                 options={{
                     title:"Tela inicial",
-                    headerTitleAlign: "center"
+                    headerTitleAlign: "center",
                 }}
-                component={screenInput}
+                component={ScreenInput}
                     
             />
 
             <Screen 
-                name="screencountdown"
+                name="ScreenCountDown"
                 options={{
                     title:"CountDown",
-                    headerTitleAlign:"center"
+                    headerTitleAlign:"center",
+                    headerBackVisible: false,
                 }}
-                component={screencountdown}
+                component={ScreenCountDown}
             />
         </Navigator>
     )
